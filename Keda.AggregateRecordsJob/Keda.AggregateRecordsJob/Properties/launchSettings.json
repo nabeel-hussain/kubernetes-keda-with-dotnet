@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Keda.AggregateRecordsJob": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}

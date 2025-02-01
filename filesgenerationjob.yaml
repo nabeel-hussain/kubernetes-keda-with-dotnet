@@ -1,0 +1,24 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: filesgenerationjob
+spec:
+  template:
+    spec:
+      containers:
+      - name: filesgenerationjob
+        image: filesgenerationjob:2
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: REDIS_HOST
+            value: 10.100.23.6
+          - name: REDIS_LIST
+            value: csvs-to-process
+        volumeMounts:
+        - name: data-volume
+          mountPath: /data
+      restartPolicy: Never
+      volumes:
+      - name: data-volume
+        persistentVolumeClaim:
+          claimName: data-pvc

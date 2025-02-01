@@ -1,0 +1,43 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledJob
+metadata:
+  name: aggregaterecordsjob
+spec:
+  jobTargetRef:
+    template:
+      spec:
+        containers:
+        - name: aggregaterecordsjob
+          image: aggregaterecordsjob:2
+          imagePullPolicy: IfNotPresent
+          env:
+          - name: REDIS_HOST
+            value: 10.100.23.6
+          - name: REDIS_LIST
+            value: csvs-to-process
+          resources:
+            limits:
+              cpu: "0.2"
+              memory: "100Mi"
+            requests:
+              cpu: "0.2"
+              memory: "100Mi"
+
+          volumeMounts:
+          - name: data-volume
+            mountPath: /data
+        volumes:
+        - name: data-volume
+          persistentVolumeClaim:
+            claimName: data-pvc
+        restartPolicy: Never
+  pollingInterval: 10
+  maxReplicaCount: 5
+
+  triggers:
+  - type: redis
+    metadata:
+      address: 10.100.23.6:6379
+      listName: csvs-to-process
+      name: redis-trigger
+      listLength: "1"

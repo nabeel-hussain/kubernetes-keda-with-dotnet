@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Keda.FilesGenerationJob": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}
